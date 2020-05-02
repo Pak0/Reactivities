@@ -31,8 +31,18 @@ namespace API
             {
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
+            //VON PAKKO________________________________
+            services.AddCors(opt => 
+            {
+                opt.AddPolicy("CorsPolicy",policy => 
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                });
+            });
+            //*******************************************
             services.AddControllers();
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -48,11 +58,17 @@ namespace API
             app.UseRouting();
 
             app.UseAuthorization();
-
+            //VON PAKO:
+            app.UseCors("CorsPolicy");
+//********************************************
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+
+            
+
         }
     }
 }
